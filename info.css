@@ -1,0 +1,42 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #f0f0f0;
+    flex-direction: column; 
+    font-family: "Poppins", sans-serif;
+    background: #6495ED;
+}
+
+.poke-info {
+    display: flex; 
+    max-width: 100%;
+    height: 500px;
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px; 
+}
+
+.poke-info img {
+    width: 350px;
+}
+
+.leftcol {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    width: 300px;
+    height: 300px;
+    background-color: aquamarine;
+    margin-left: 20px; 
+    font-size: 2em; 
+    font-weight: bold;
+}
+
+.leftcol center {
+    width: 100%;
+    text-align: center; 
+}
