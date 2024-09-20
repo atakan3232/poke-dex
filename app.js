@@ -9,9 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalPokemonId = document.getElementById('modal-pokemon-id');
     const modalPokemonType = document.getElementById('modal-pokemon-type');
     const modalPokemonAbilities = document.getElementById('modal-pokemon-abilities');
+
     let allPokemonData = [];
 
-   
+    
     modalClose.addEventListener('click', () => {
         modal.style.display = 'none';
     });
@@ -22,20 +23,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    async function fetchPokemonData() {
+    async function fetchAllPokemonData() {
         try {
             const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=156');
             const data = await response.json();
             const pokemonResults = data.results;
 
-            for (const pokemon of pokemonResults) {
-                const pokemonDetailResponse = await fetch(pokemon.url);
-                const pokemonDetailData = await pokemonDetailResponse.json();
-                allPokemonData.push(pokemonDetailData);
+            
+            const allDetailsPromises = pokemonResults.map(pokemon => fetch(pokemon.url).then(res => res.json()));
 
-                const card = createPokemonCard(pokemonDetailData);
+           
+            allPokemonData = await Promise.all(allDetailsPromises);
+
+            
+            allPokemonData.forEach(pokemon => {
+                const card = createPokemonCard(pokemon);
                 pokemonListElement.appendChild(card);
-            }
+            });
         } catch (error) {
             console.error('Error fetching Pokémon data:', error);
         }
@@ -44,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createPokemonCard(pokemonDetailData) {
         const card = document.createElement('div');
         card.classList.add('card');
-        card.addEventListener('click', () => showModal(pokemonDetailData)); 
+        card.addEventListener('click', () => showModal(pokemonDetailData));
 
         const pokemonName = document.createElement('h4');
         pokemonName.classList.add('poke-name');
@@ -90,6 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
-    fetchPokemonData();
+   
+    fetchAllPokemonData();
 });
